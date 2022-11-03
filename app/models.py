@@ -78,8 +78,8 @@ STATUS_CHOICES = (
     ('Accepted', 'Accepted'),
     ('Packed', 'Packed'),
     ('On The Way', 'On the Way'),
-    ('Delivered', 'Delivered'),
-    ('Cancel', 'Cancel')
+    ('Delivered successfully', 'Delivered successfully'),
+    ('Cancel order', 'Cancel order')
      )
 
 class OrderPlaced(models.Model):

@@ -29,8 +29,15 @@ class ProductDetailView(View):
         if request.user.is_authenticated:
             totalitem = len(Cart.objects.filter(user=request.user))
             item_already_in_cart = Cart.objects.filter(Q(product=product.id) & Q(user=request.user)).exists()
-        return render(request, 'app/productdetail.html', {'product': product,
-        'item_already_in_cart': item_already_in_cart, 'totalitem':totalitem})
+        return render(request, 'app/productdetail.html', {'product': product,'item_already_in_cart': item_already_in_cart, 'totalitem':totalitem})
+
+@login_required
+def buy_now(request):
+    user = request.user
+    product_id = request.GET.get('prod_id')
+    product = Product.objects.get(id=product_id)
+    Cart(user=user, product=product).save()
+    return redirect('/cart')
 
 @login_required
 def add_to_cart(request):
@@ -120,12 +127,7 @@ def remove_cart(request):
          }
         return JsonResponse(data)
 
-def buy_now(request):
-    user = request.user
-    product_id = request.GET.get('prod_id')
-    product = Product.objects.get(id=product_id)
-    Cart(user=user, product=product).save()
-    return render(request, 'app/checkout.html')
+
 
 @method_decorator(login_required, name='dispatch')
 class ProfileView(View):
